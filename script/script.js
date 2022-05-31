@@ -7,6 +7,21 @@ document.addEventListener('DOMContentLoaded', function() {
   const questionTitle = document.querySelector('#question');
   const formAnswers = document.querySelector('#formAnswers');
   const burgerBtn = document.getElementById('burger');
+
+  const questions = {
+    question: 'Какого цвета бургер вы хотите?',
+    answewrs: [
+      {
+        title: 'Стандарт',
+        url: './image/burger.png'
+      },
+      {
+        title: 'Черныйт',
+        url: './image/burgerBlack.png'
+      }
+    ]
+  }
+
   burgerBtn.style.display = 'none';
   let clientWidth = document.documentElement.clientWidth;
 
@@ -50,15 +65,13 @@ document.addEventListener('DOMContentLoaded', function() {
   
   const playTest = () => {
     const renderQuestions = () => {
-      questionTitle.textContent = 'Какого цвета бургер вы хотите?';
-      const name ='Стандарт';
-      const img ='../image/burger.png';
+      questionTitle.textContent = `${questions.question}`;
       formAnswers.innerHTML = `
       <div class="answers-item d-flex flex-column">
         <input type="radio" id="answerItem1" name="answer" class="d-none">
         <label for="answerItem1" class="d-flex flex-column justify-content-between">
-          <img class="answerImg" src="${img}">
-          <span>${name}</span>
+          <img class="answerImg" src="${questions.answewrs[0].url}">
+          <span>${questions.answewrs[0].title}</span>
         </label>
       </div>
       `;
