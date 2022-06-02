@@ -126,7 +126,9 @@ label span {
   border: 2px solid black;
   transition: all 0.4s;
 }
-
+.burger {
+  z-index: 10;
+}
 .burger.active span:nth-child(1) {
   transform: rotate(405deg) translate(8px, 14px);
 }

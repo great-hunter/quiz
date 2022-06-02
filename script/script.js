@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const burgerBtn = document.getElementById('burger');
   const nextButton = document.querySelector('#next');
   const prevButton = document.querySelector('#prev');
+  const modalDialog = document.querySelector(".modal-dialog");
 
   const questions = [
     {
@@ -85,6 +86,15 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   ];
 
+  let count = -100;
+  let interval;
+
+  const animateModal = () => {
+    modalDialog.style.top = count + "%";
+    count += 3;
+    
+  };
+
   burgerBtn.style.display = 'none';
   let clientWidth = document.documentElement.clientWidth;
 
@@ -105,11 +115,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
   burgerBtn.addEventListener('click', function() {
     burgerBtn.classList.add('active');
+    interval = setInterval(animateModal, 50);
     modalBlock.classList.add('d-block');
     playTest();
   });
 
   btnOpenModal.addEventListener('click', () => {
+    interval = setInterval(animateModal, 50);
     modalBlock.classList.add('d-block');
     playTest();
   });
@@ -166,7 +178,10 @@ document.addEventListener('DOMContentLoaded', function() {
       numberQuestion--;
       renderQuestions(numberQuestion);
     };
-  }
+  };
+
+
+
 });
 
 /* 00 : 22 : 15 */
