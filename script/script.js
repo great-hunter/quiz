@@ -87,12 +87,18 @@ document.addEventListener('DOMContentLoaded', function() {
   ];
 
   let count = -100;
-  let interval;
+
+  modalDialog.style.top = count + "%";
 
   const animateModal = () => {
     modalDialog.style.top = count + "%";
-    count += 3;
+    count +=3;
     
+    if(count < 0) {
+      requestAnimationFrame(animateModal);
+    } else {
+      count = -100;
+    }  
   };
 
   burgerBtn.style.display = 'none';
@@ -115,13 +121,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
   burgerBtn.addEventListener('click', function() {
     burgerBtn.classList.add('active');
-    interval = setInterval(animateModal, 50);
+    requestAnimationFrame(animateModal);
     modalBlock.classList.add('d-block');
     playTest();
   });
 
   btnOpenModal.addEventListener('click', () => {
-    interval = setInterval(animateModal, 50);
+    requestAnimationFrame(animateModal);
     modalBlock.classList.add('d-block');
     playTest();
   });
@@ -144,7 +150,7 @@ document.addEventListener('DOMContentLoaded', function() {
       questions[index].answers.forEach((answer) => {
         const answerItem = document.createElement('div');
 
-        answerItem.classList.add('answers-item', 'd-flex', 'flex-column');
+        answerItem.classList.add('answers-item', 'd-flex', 'justify-content-center');
 
         answerItem.innerHTML = `
           <input type="${questions[index].type}" id="${answer.title}" name="answer" class="d-none">
@@ -156,7 +162,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
         formAnswers.appendChild(answerItem);
 
-        console.log('answerItem: ', answerItem);
       });
     }
 
