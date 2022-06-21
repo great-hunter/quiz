@@ -1,5 +1,5 @@
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.3/firebase-app.js";
-  import { getDatabase, ref, child, get } from "https://www.gstatic.com/firebasejs/9.8.3/firebase-database.js"
+  import { getDatabase, ref, child, get, push, set } from "https://www.gstatic.com/firebasejs/9.8.3/firebase-database.js"
 
 document.addEventListener('DOMContentLoaded', function() {
 
@@ -15,38 +15,29 @@ document.addEventListener('DOMContentLoaded', function() {
   const sendButton = document.querySelector('#send');
   const modalTitle = document.querySelector('.modal-title');
 
+  const firebaseConfig = {
+    apiKey: "AIzaSyAe4wRS1egzTMofe1UWWz0ib-EfWkZFaDg",
+    authDomain: "testburger-edb21.firebaseapp.com",
+    databaseURL: "https://testburger-edb21-default-rtdb.firebaseio.com",
+    projectId: "testburger-edb21",
+    storageBucket: "testburger-edb21.appspot.com",
+    messagingSenderId: "590116855181",
+    appId: "1:590116855181:web:1499a5662d98b14da2f1c4",
+    measurementId: "G-ZQC8B9GN02"
+  };
 
-
-    
-
+  const app = initializeApp(firebaseConfig);  
 
   const getData = () => {
     formAnswers.textContent = 'LOAD';
 
-    setTimeout(() => {
-      const firebaseConfig = {
-        apiKey: "AIzaSyAe4wRS1egzTMofe1UWWz0ib-EfWkZFaDg",
-        authDomain: "testburger-edb21.firebaseapp.com",
-        databaseURL: "https://testburger-edb21-default-rtdb.firebaseio.com",
-        projectId: "testburger-edb21",
-        storageBucket: "testburger-edb21.appspot.com",
-        messagingSenderId: "590116855181",
-        appId: "1:590116855181:web:1499a5662d98b14da2f1c4",
-        measurementId: "G-ZQC8B9GN02"
-      };
-      const app = initializeApp(firebaseConfig);
-      const dbRef = ref(getDatabase());
-      get(child(dbRef, `questions`)).then((snapshot) => {
-        if (snapshot.exists()) {
-          playTest(snapshot.val());
-        } else {
-          console.log("No data available");
-        }
-      }).catch((error) => {
-        console.error(error);
-      });
-    }, 1000);
+    nextButton.classList.add('d-none');
+    prevButton.classList.add('d-none');
 
+    const dbRef = ref(getDatabase());
+    get(child(dbRef, `questions`)).then((snapshot) => {
+        playTest(snapshot.val());
+    });
   };
 
 
@@ -176,11 +167,11 @@ document.addEventListener('DOMContentLoaded', function() {
         sendButton.classList.add('d-none');
         formAnswers.textContent = 'Спасибо за пройденный тест!';
 
-        for (let key in obj) {
+         for (let key in obj) {
           let newObj = {};
           newObj[key] = obj[key];
           finalAnswers.push(newObj);
-        }
+        } 
 
         setTimeout(() => {
           modalBlock.classList.remove('d-block');
@@ -192,7 +183,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const checkAnswer = () => {
       
-
       const inputs = [...formAnswers.elements].filter((input) => input.checked || input.id === 'numberPhone');
 
       inputs.forEach((input, index) => {
@@ -203,6 +193,7 @@ document.addEventListener('DOMContentLoaded', function() {
           obj['номер телефона'] = input.value;
         }
       });
+      
     };
 
     nextButton.onclick = () => {
@@ -218,6 +209,23 @@ document.addEventListener('DOMContentLoaded', function() {
       checkAnswer();
       numberQuestion++;
       renderQuestions(numberQuestion);
+
+    /*   const dbRef = ref(getDatabase());
+      const childRef = child(dbRef, `contacts`);
+      push(childRef, finalAnswers); */
+     
+      push(
+        child(
+          ref(
+            getDatabase()
+            ),
+             `contacts`
+        ),
+        finalAnswers
+      );
+      
+
+     console.log(finalAnswers);
     };
   };
 
