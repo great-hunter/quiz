@@ -1,5 +1,7 @@
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.3/firebase-app.js";
+  import { getDatabase, ref, child, get } from "https://www.gstatic.com/firebasejs/9.8.3/firebase-database.js"
+
 document.addEventListener('DOMContentLoaded', function() {
-  /* 'use strict'; */
 
   const btnOpenModal = document.querySelector('#btnOpenModal');
   const modalBlock = document.querySelector('#modalBlock');
@@ -14,17 +16,35 @@ document.addEventListener('DOMContentLoaded', function() {
   const modalTitle = document.querySelector('.modal-title');
 
 
+
+    
+
+
   const getData = () => {
     formAnswers.textContent = 'LOAD';
 
     setTimeout(() => {
-      fetch('./questions.json')
-        .then(res => res.json())
-        .then(obj => playTest(obj.questions))
-        .catch(err => {
-          formAnswers.textContent = 'Ошибка загрузки данных!';
-          console.error(err)
-        })
+      const firebaseConfig = {
+        apiKey: "AIzaSyAe4wRS1egzTMofe1UWWz0ib-EfWkZFaDg",
+        authDomain: "testburger-edb21.firebaseapp.com",
+        databaseURL: "https://testburger-edb21-default-rtdb.firebaseio.com",
+        projectId: "testburger-edb21",
+        storageBucket: "testburger-edb21.appspot.com",
+        messagingSenderId: "590116855181",
+        appId: "1:590116855181:web:1499a5662d98b14da2f1c4",
+        measurementId: "G-ZQC8B9GN02"
+      };
+      const app = initializeApp(firebaseConfig);
+      const dbRef = ref(getDatabase());
+      get(child(dbRef, `questions`)).then((snapshot) => {
+        if (snapshot.exists()) {
+          playTest(snapshot.val());
+        } else {
+          console.log("No data available");
+        }
+      }).catch((error) => {
+        console.error(error);
+      });
     }, 1000);
 
   };
@@ -205,4 +225,4 @@ document.addEventListener('DOMContentLoaded', function() {
 
 });
 
-/* 00 : 16 : 12 */
+/* 00 : 22 : 00 */
